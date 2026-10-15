@@ -51,7 +51,9 @@ Relative performance is normalized to each model's unpruned baseline. The origin
 
 ### Inference efficiency
 
-<a href="assets/efficiency-table.pdf"><img src="assets/efficiency-table.png" width="82%" alt="Original TOPS efficiency table on LLaVA-NeXT-7B and POPE" /></a>
+<p align="center">
+<a href="assets/efficiency-table.pdf"><img src="assets/efficiency-table.png" width="560" alt="Original TOPS efficiency table on LLaVA-NeXT-7B and POPE" /></a>
+</p>
 
 The paper reports **4.2T FLOPs versus 41.7T** for the unpruned model at 320 tokens, with POPE F1 of **86.3 versus 86.8**. The table preserves the paper's original latency and memory measurements.
 
@@ -72,20 +74,105 @@ The paper reports **4.2T FLOPs versus 41.7T** for the unpruned model at 320 toke
 
 ## Quick start
 
-Use the component-specific requirements in the [environment guide](docs/RUNNING.md#environments):
+Choose the model family below. Each group includes environment setup and a runnable launcher example. Use **Linux with an NVIDIA GPU**, and download the model weights and benchmark data separately.
 
 ```bash
 git clone https://github.com/MAX-7237/TOPS.git
-cd TOPS/VLMEvalKit-TOPS
-conda activate vlmevalkit-qwen2.5vl
-
-python run_tops.py --model qwen2.5-vl-7b --tokens 256 \
-  --dataset AI2D_TEST --work-dir outputs/tops --dry-run
+cd TOPS
+export REPO_ROOT="$PWD"
 ```
 
-Remove `--dry-run` after preparing dependencies, model weights, and data. See the [full evaluation guide](docs/RUNNING.md#running) for all seven models.
+Run the setup block for the component you need. If its Conda environment already exists, skip `conda create` and activate it. Keep the environment profiles separate: image LLaVA, video LLaVA, and the Qwen families use different Transformers versions. Dependency pins and installation caveats are documented in the [environment guide](docs/RUNNING.md#environments).
 
-**NeXT budget convention:** pass `128/64/32` to the TOPS launcher. Its five-view scaling corresponds to total budgets `640/320/160`. Video uses per-frame budgets `64/32/16`.
+All examples start with `--dry-run`, which prints the selected configuration without loading weights. **Replace the example data paths, then remove `--dry-run` to run inference or evaluation.**
+
+### 1. LLaVA image models — four backbones
+
+```bash
+cd "$REPO_ROOT/LLaVA-TOPS"
+conda create -n fastv python=3.10 -y
+conda activate fastv
+python -m pip install -r requirements.txt
+python -m pip check
+```
+
+| Backbone | `--model` | `--tokens` choices |
+| :--- | :--- | :--- |
+| LLaVA-1.5-7B | `llava-1.5-7b` | `128`, `64`, `32` |
+| LLaVA-1.5-13B | `llava-1.5-13b` | `128`, `64`, `32` |
+| LLaVA-NeXT-7B (Vicuna) | `llava-next-7b` | `128`, `64`, `32` |
+| LLaVA-NeXT-13B (Vicuna) | `llava-next-13b` | `128`, `64`, `32` |
+
+**NeXT budget convention:** pass `128/64/32`; the five-view scaling corresponds to total budgets `640/320/160`. Do not pass those total budgets to the TOPS launcher.
+
+Prepare the benchmark question JSONL and image directory, then choose one of the four commands:
+
+```bash
+python run_tops.py --model llava-1.5-7b --tokens 128 \
+  --question-file /path/to/questions.jsonl --image-folder /path/to/images \
+  --answers-file outputs/llava-1.5-7b/answers.jsonl --dry-run
+
+python run_tops.py --model llava-1.5-13b --tokens 128 \
+  --question-file /path/to/questions.jsonl --image-folder /path/to/images \
+  --answers-file outputs/llava-1.5-13b/answers.jsonl --dry-run
+
+python run_tops.py --model llava-next-7b --tokens 128 \
+  --question-file /path/to/questions.jsonl --image-folder /path/to/images \
+  --answers-file outputs/llava-next-7b/answers.jsonl --dry-run
+
+python run_tops.py --model llava-next-13b --tokens 128 \
+  --question-file /path/to/questions.jsonl --image-folder /path/to/images \
+  --answers-file outputs/llava-next-13b/answers.jsonl --dry-run
+
+```
+
+The launcher selects the default Hugging Face model ID for each alias; use `--model-path /path/to/weights` for local image-model weights. These commands write predictions. Run the relevant benchmark scorer afterwards; MMBench and ScienceQA also provide dedicated evaluation modules under `llava/eval`.
+
+### 2. LLaVA-Video — 7B Qwen2
+
+Video has its own environment; do not install its dependencies into `fastv`.
+
+```bash
+cd "$REPO_ROOT/LLaVA-Video-TOPS"
+conda create -n llavavid python=3.10 -y
+conda activate llavavid
+python -m pip install -r requirements.txt
+python -m pip install --no-build-isolation -r requirements-flash-attn.txt
+python -m pip check
+
+python run_tops.py --model llava-video-7b --tokens 32 \
+  --model-path lmms-lab/LLaVA-Video-7B-Qwen2 \
+  --dataset videomme --nproc 1 --work-dir outputs/video --dry-run
+```
+
+The adapter uses the Qwen conversation template and samples up to **64 frames**. The token budget is **per frame** (`64/32/16`). Prepare VideoMME according to `lmms-eval/lmms_eval/tasks/videomme`, or select another registered video task with `--dataset`. Predictions and evaluation artifacts go under `--work-dir`. The recovered video environment remains a candidate profile pending GPU validation.
+
+### 3. Qwen2.5-VL and InternVL3
+
+Both backbones share `vlmevalkit-qwen2.5vl` and the VLMEvalKit entry point.
+
+```bash
+cd "$REPO_ROOT/VLMEvalKit-TOPS"
+conda create -n vlmevalkit-qwen2.5vl python=3.11 -y
+conda activate vlmevalkit-qwen2.5vl
+python -m pip install -r requirements.txt
+python -m pip install --no-build-isolation -r requirements-flash-attn.txt
+python -m pip check
+
+# Qwen2.5-VL-7B-Instruct
+python run_tops.py --model qwen2.5-vl-7b --tokens 256 \
+  --dataset AI2D_TEST --nproc 1 --work-dir outputs/qwen25 --dry-run
+
+# InternVL3-8B
+python run_tops.py --model internvl3-8b --tokens 256 \
+  --dataset AI2D_TEST --nproc 1 --work-dir outputs/internvl3 --dry-run
+```
+
+Use `--tokens 256` or `128`. Set `LMUData` to your dataset/cache directory when needed, and follow the selected VLMEvalKit dataset adapter's preparation instructions. To use local model weights, edit the matching entry in `vlmeval/config.py`; these VLMEval launchers do not accept `--model-path`. Some benchmarks require an external judge model in addition to inference.
+
+FlashAttention must be built **after PyTorch**, with a compatible CUDA toolkit and compiler. See the [environment guide](docs/RUNNING.md#environments) for the pinned versions.
+
+See the [full evaluation guide](docs/RUNNING.md#running) for additional configuration and scoring details.
 
 ## Validation
 
