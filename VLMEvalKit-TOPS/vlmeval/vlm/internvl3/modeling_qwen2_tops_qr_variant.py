@@ -1,16 +1,16 @@
 # coding=utf-8
 """
-STAR-Pro-QR Stage 2: progressive, query-aware visual token pruning for InternVL3.
+TOPSPrototype-Pro-QR Stage 2: progressive, query-aware visual token pruning for InternVL3.
 
-Pairs with the `star_qr` Stage-1 branch in modeling_internvl_chat.py
+Pairs with the `tops_qr_variant` Stage-1 branch in modeling_internvl_chat.py
 (query-agnostic global residual QR coverage selection). Stage 2 scores the
 surviving visual tokens by an attention probe averaged over *every* suffix text
 token -- there is no text-rater selection, which is the one behavioural
-difference from the older `star_v3` module living next to this file.
+difference from the older `tops_variant3` module living next to this file.
 
 Ported verbatim from the isolated build
 /path/to/local-assets that produced the
-InternVL3-8B STAR-Pro-QR row of the main table (2026-07-24); only the class
+InternVL3-8B TOPSPrototype-Pro-QR row of the main table (2026-07-24); only the class
 and schedule names are renamed so both methods can coexist in one repo.
 """
 
@@ -32,7 +32,7 @@ from transformers.utils import logging
 
 logger = logging.get_logger(__name__)
 
-# STAR-Pro-QR 剪枝配置: InternVL3-8B (28 layers)
+# TOPSPrototype-Pro-QR 剪枝配置: InternVL3-8B (28 layers)
 #
 # 算法: initial = target × 2，三阶段剪枝
 #   Stage 1 (L0-11, 12层): 保持 initial tokens
@@ -41,19 +41,19 @@ logger = logging.get_logger(__name__)
 #
 # 约束: (initial×12 + a×4 + b×12) / 28 = target
 #      即: a + 3b = target
-STAR_QR_SCHEDULE: Dict[str, Dict[int, List[Tuple[int, int]]]] = {
+TOPS_QR_VARIANT_SCHEDULE: Dict[str, Dict[int, List[Tuple[int, int]]]] = {
     "internvl3_8b": {
         512: [(12, 281), (16, 77)],   # initial=1024, (1024×12+281×4+77×12)/28=512
         256: [(12, 139), (16, 39)],   # initial=512,  (512×12+139×4+39×12)/28=256
-        # Match the current Qwen STAR-Pro-QR first-score schedule exactly:
+        # Match the current Qwen TOPSPrototype-Pro-QR first-score schedule exactly:
         # 256×11 + 53×10 + 34×7 = 3584; 3584 / 28 = 128.
         128: [(11, 53), (21, 34)],
     },
 }
 
-class StarQRQwen2Model(Qwen2Model):
+class TOPSQRVariantQwen2Model(Qwen2Model):
     """
-    STAR-V3 Stage 2 implementation for InternVL3.
+    TOPS-Variant3 Stage 2 implementation for InternVL3.
     Progressive pruning at specific decoder layers with multi-token text guidance.
     """
 
@@ -75,22 +75,22 @@ class StarQRQwen2Model(Qwen2Model):
             logger.warning(f"Unknown model scale with {config.num_hidden_layers} layers, defaulting to internvl3_8b")
 
         # Load pruning schedule
-        schedule = STAR_QR_SCHEDULE.get(self.scale, {}).get(self.target_visual_tokens)
-        # Ablation hook: STAR_QR_SCHEDULE_JSON='[[12,139],[16,39]]' overrides the
+        schedule = TOPS_QR_VARIANT_SCHEDULE.get(self.scale, {}).get(self.target_visual_tokens)
+        # Ablation hook: TOPS_QR_VARIANT_SCHEDULE_JSON='[[12,139],[16,39]]' overrides the
         # built-in schedule for this budget. Unset -> built-in, byte-identical.
-        _sched_env = os.environ.get("STAR_QR_SCHEDULE_JSON", "").strip()
+        _sched_env = os.environ.get("TOPS_QR_VARIANT_SCHEDULE_JSON", "").strip()
         if _sched_env:
             schedule = [tuple(pair) for pair in json.loads(_sched_env)]
-            print(f"[STAR-QR] schedule overridden from env: {schedule}", flush=True)
+            print(f"[TOPSPrototype-QR] schedule overridden from env: {schedule}", flush=True)
         if schedule is None:
             self.pruning_layers: Dict[int, int] = {}
-            logger.warning(f"No STAR-V3 schedule for target={visual_token_num}, progressive pruning disabled")
+            logger.warning(f"No TOPS-Variant3 schedule for target={visual_token_num}, progressive pruning disabled")
         else:
             self.pruning_layers = {layer_idx: target for layer_idx, target in schedule}
 
         self.reset_state()
 
-        print(f"[STAR-V3 StarQRQwen2Model Init]")
+        print(f"[TOPS-Variant3 TOPSQRVariantQwen2Model Init]")
         print(f"  Model scale: {self.scale} ({config.num_hidden_layers} layers)")
         print(f"  Target visual tokens (final): {self.target_visual_tokens}")
         print(f"  Stage 1 expected output: {self.stage1_keep_tokens} (target × 2)")
@@ -220,7 +220,7 @@ class StarQRQwen2Model(Qwen2Model):
         attn_weights = attn_weights.mean(dim=2).mean(dim=1)  # Avg over raters and heads
         visual_importance = attn_weights.mean(dim=0)  # Aggregate across batch
         print(
-            f"[STAR-INTERNVL S2] text_aggregation=average_all "
+            f"[TOPSPrototype-INTERNVL S2] text_aggregation=average_all "
             f"text_tokens={text_positions.numel()}",
             flush=True,
         )
@@ -240,7 +240,7 @@ class StarQRQwen2Model(Qwen2Model):
         cache_position: Optional[torch.LongTensor] = None,
         **flash_attn_kwargs: Unpack[FlashAttentionKwargs],
     ) -> BaseModelOutputWithPast:
-        """Forward with STAR-V3 Stage 2 progressive pruning."""
+        """Forward with TOPS-Variant3 Stage 2 progressive pruning."""
 
         # Detect if this is a new generation (reset state)
         def _is_empty_cache(cache):
@@ -308,7 +308,7 @@ class StarQRQwen2Model(Qwen2Model):
             self.stage1_actual_tokens = detected_visual_len
             self.prefill_done = True
 
-            print(f"\n[STAR-V3 Stage 2 Init]")
+            print(f"\n[TOPS-Variant3 Stage 2 Init]")
             print(f"  Detected visual tokens: {detected_visual_len}")
             print(f"  Expected from Stage 1: {self.stage1_keep_tokens}")
             print(f"  System prompt length: {self.system_prompt_length}")
@@ -340,7 +340,7 @@ class StarQRQwen2Model(Qwen2Model):
                     output_attentions, use_cache, cache_position, position_embeddings,
                 )
             else:
-                # Check if we should perform STAR-V3 progressive pruning at this layer
+                # Check if we should perform TOPS-Variant3 progressive pruning at this layer
                 should_prune = (
                     star_enabled and
                     layer_idx in self.pruning_layers and
@@ -349,11 +349,11 @@ class StarQRQwen2Model(Qwen2Model):
                 )
 
                 if should_prune:
-                    # STAR-V3 Progressive Pruning at this layer
+                    # TOPS-Variant3 Progressive Pruning at this layer
                     target = self.pruning_layers[layer_idx]
                     device = hidden_states.device
 
-                    print(f"\n[STAR-V3 Stage 2] Layer {layer_idx}: {self.current_visual_length} → {target}")
+                    print(f"\n[TOPS-Variant3 Stage 2] Layer {layer_idx}: {self.current_visual_length} → {target}")
                     print(f"[DEBUG] BEFORE pruning: shape={hidden_states.shape}")
 
                     visual_start = self.system_prompt_length
@@ -473,7 +473,7 @@ class StarQRQwen2Model(Qwen2Model):
         # Emit summary once
         if seq_length > 1 and self.prefill_done and not self._stage_summary_emitted:
             print(f"\n{'='*80}")
-            print(f"[STAR-V3 Summary]")
+            print(f"[TOPS-Variant3 Summary]")
             print(f"  Stage 0: {self.stage0_visual_tokens} tokens (original)")
             if self.stage1_actual_tokens is not None:
                 print(f"  Stage 1: {self.stage1_actual_tokens} tokens (global QR output)")
@@ -499,13 +499,13 @@ class StarQRQwen2Model(Qwen2Model):
         )
 
 
-class StarQRQwen2ForCausalLM(Qwen2ForCausalLM):
-    """Wrapper for Qwen2ForCausalLM with STAR-V3 Stage 2 decoder."""
+class TOPSQRVariantQwen2ForCausalLM(Qwen2ForCausalLM):
+    """Wrapper for Qwen2ForCausalLM with TOPS-Variant3 Stage 2 decoder."""
     _tied_weights_keys = ["lm_head.weight"]
 
     def __init__(self, config, visual_token_num: int, num_image_token: int = 256):
         super().__init__(config)
-        self.model = StarQRQwen2Model(config, visual_token_num, num_image_token)
+        self.model = TOPSQRVariantQwen2Model(config, visual_token_num, num_image_token)
 
     def set_system_prompt_length(self, length: int):
         """Set system prompt length for pruning calculations."""

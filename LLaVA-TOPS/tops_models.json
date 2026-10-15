@@ -3,7 +3,7 @@
     "folder": "LLaVA-TOPS",
     "kind": "image",
     "model_path": "liuhaotian/llava-v1.5-7b",
-    "method": "prefixvlm_2",
+    "method": "tops",
     "budgets": [
       128,
       64,
@@ -16,7 +16,7 @@
     "folder": "LLaVA-TOPS",
     "kind": "image",
     "model_path": "liuhaotian/llava-v1.5-13b",
-    "method": "prefixvlm_2",
+    "method": "tops",
     "budgets": [
       128,
       64,
@@ -29,7 +29,7 @@
     "folder": "LLaVA-TOPS",
     "kind": "image",
     "model_path": "liuhaotian/llava-v1.6-vicuna-7b",
-    "method": "prefixvlm_2",
+    "method": "tops",
     "budgets": [
       128,
       64,
@@ -42,7 +42,7 @@
     "folder": "LLaVA-TOPS",
     "kind": "image",
     "model_path": "liuhaotian/llava-v1.6-vicuna-13b",
-    "method": "prefixvlm_2",
+    "method": "tops",
     "budgets": [
       128,
       64,

@@ -1,3 +1,3 @@
 # VLMEvalKit-TOPS
 
-See [the repository README](../README.md) for setup, model aliases, and validation status.
+See [the setup and evaluation guide](../docs/RUNNING.md) for setup, model aliases, and validation status.

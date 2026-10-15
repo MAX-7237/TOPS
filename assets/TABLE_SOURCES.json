@@ -1,0 +1,28 @@
+{
+  "overleaf_commit": "61c8fc3",
+  "tables": [
+    {
+      "asset": "results-table",
+      "source": "tables/llava-series-summary.tex",
+      "compiled_page": 5,
+      "crop_points": [
+        65,
+        67,
+        532,
+        231
+      ]
+    },
+    {
+      "asset": "efficiency-table",
+      "source": "tables/computational_efficiency.tex",
+      "compiled_page": 7,
+      "crop_points": [
+        301,
+        477,
+        531,
+        592
+      ]
+    }
+  ],
+  "conversion": "Cropped from compiled original LaTeX; no table data or layout redrawn. TOPS build passes table option to xcolor before loading acl."
+}

@@ -1,0 +1,35 @@
+{
+  "paper": "TOPS",
+  "figures": [
+    {
+      "asset": "method",
+      "source": "figures/method_main/Method_12.pdf",
+      "sha256": "827655069c0f28495d33e70adc5016c903a07ae0d27266a3587ec34f69d6e1eb",
+      "conversion": "Original PDF page rasterized without redrawing",
+      "source_size_points": [
+        1122.239990234375,
+        373.9200134277344
+      ]
+    },
+    {
+      "asset": "teaser-results",
+      "source": "figures/radar/a1_new.pdf",
+      "sha256": "ba080adf547b5e0e1739c18a476ea00f7ad5a289ab13e4e26b3fe5c337c73bb8",
+      "conversion": "Original PDF page rasterized without redrawing",
+      "source_size_points": [
+        780.6461791992188,
+        213.7846221923828
+      ]
+    },
+    {
+      "asset": "qualitative",
+      "source": "figures/visualization/summaryAAA2.pdf",
+      "sha256": "397c9fe9db8afcde74a47f209acb4dbbfebf91fa8f2e627573443e23134b6a3e",
+      "conversion": "Original PDF page rasterized without redrawing",
+      "source_size_points": [
+        768.0,
+        1123.199951171875
+      ]
+    }
+  ]
+}
