@@ -69,8 +69,8 @@ Relative performance is normalized to each model's unpruned baseline. The origin
 
 ### Inference efficiency
 
-<p align="center">
-<a href="assets/efficiency-table.pdf"><img src="assets/efficiency-table.png" width="560" alt="Original TOPS efficiency table on LLaVA-NeXT-7B and POPE" /></a>
+<p align="left">
+<a href="assets/efficiency-table.pdf"><img src="assets/efficiency-table.png" width="400" alt="Original TOPS efficiency table on LLaVA-NeXT-7B and POPE" /></a>
 </p>
 
 The paper reports **4.2T FLOPs versus 41.7T** for the unpruned model at 320 tokens, with POPE F1 of **86.3 versus 86.8**. The table preserves the paper's original latency and memory measurements.
