@@ -10,12 +10,16 @@ Zheng Lu<sup>2</sup>, Yuan Zhang<sup>1</sup>, Jiajun Cao<sup>1</sup>, Zhirong Sh
 Lijie Hu<sup>4</sup>, Shanghang Zhang<sup>1,‡</sup>
 </p>
 
-<p align="center">
+</div>
+
+<p align="left">
 <sup>1</sup> State Key Laboratory of Multimedia Information Processing, School of Computer Science, Peking University<br>
 <sup>2</sup> University of Electronic Science and Technology of China<br>
 <sup>3</sup> Nanyang Technological University<br>
 <sup>4</sup> MBZUAI
 </p>
+
+<div align="center">
 
 <p align="center">
 <sup>*</sup> Equal contribution. &nbsp; <sup>†</sup> Project leader. &nbsp; <sup>‡</sup> Corresponding author.
