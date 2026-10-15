@@ -49,26 +49,26 @@ The launchers insert their source directories into `PYTHONPATH`; they do not req
 
 Download weights and datasets separately. Set `HF_HOME` and `LMUData` to your preferred cache/data locations. Models use public Hugging Face IDs by default; VLMEval model locations can be configured in `vlmeval/config.py`. Legacy `/path/to/local-assets` values are placeholders. No weights, datasets, predictions, or infrastructure credentials are included.
 
-Run each command from its component directory. `--dry-run` prints the command without loading weights; remove it to execute.
+Run each command from its component directory with the environment, datasets, and model weights configured. The examples execute inference or evaluation directly.
 
 ```bash
 # LLaVA-TOPS
 python run_tops.py --model llava-1.5-7b --tokens 128 \
   --question-file /path/to/questions.jsonl --image-folder /path/to/images \
-  --answers-file outputs/llava15/answers.jsonl --dry-run
+  --answers-file outputs/llava15/answers.jsonl
 python run_tops.py --model llava-next-13b --tokens 128 \
   --question-file /path/to/questions.jsonl --image-folder /path/to/images \
-  --answers-file outputs/next13b/answers.jsonl --dry-run
+  --answers-file outputs/next13b/answers.jsonl
 
 # VLMEvalKit-TOPS
 python run_tops.py --model qwen2.5-vl-7b --tokens 256 --dataset AI2D_TEST \
-  --nproc 1 --work-dir outputs/qwen25 --dry-run
+  --nproc 1 --work-dir outputs/qwen25
 python run_tops.py --model internvl3-8b --tokens 128 --dataset AI2D_TEST \
-  --nproc 1 --work-dir outputs/internvl3 --dry-run
+  --nproc 1 --work-dir outputs/internvl3
 
 # LLaVA-Video-TOPS
 python run_tops.py --model llava-video-7b --tokens 32 --dataset videomme \
-  --nproc 1 --work-dir outputs/video --dry-run
+  --nproc 1 --work-dir outputs/video
 ```
 
 Image LLaVA's generic entry writes predictions; use the relevant scorer afterwards. Dedicated MMBench and ScienceQA modules remain under `llava/eval`. Video includes the `lmms-eval` adapter, Qwen conversation template, and 64-frame limit; prepare data according to its task configuration. VLMEval supports its registered benchmark adapters, with optional judge-model dependencies for certain tasks.
