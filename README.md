@@ -13,10 +13,7 @@ Lijie Hu<sup>4</sup>, Shanghang Zhang<sup>1,‡</sup>
 </div>
 
 <p align="left">
-<sup>1</sup> State Key Laboratory of Multimedia Information Processing, School of Computer Science, Peking University<br>
-<sup>2</sup> University of Electronic Science and Technology of China<br>
-<sup>3</sup> Nanyang Technological University<br>
-<sup>4</sup> MBZUAI
+<sup>1</sup> State Key Laboratory of Multimedia Information Processing, School of Computer Science, Peking University; <sup>2</sup> University of Electronic Science and Technology of China; <sup>3</sup> Nanyang Technological University; <sup>4</sup> MBZUAI
 </p>
 
 <div align="center">
