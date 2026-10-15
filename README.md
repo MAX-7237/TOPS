@@ -4,6 +4,23 @@
 
 ### First-Principles Visual Token Pruning via<br>Constructing Token Optimal Preservation Sets for Efficient MLLM Inference
 
+<p align="center">
+Tinghao Wang<sup>1,2,*</sup>, Yichen Guo<sup>1,3,*</sup>, Rui Huang<sup>2,*,†</sup>, Junchi Yao<sup>4</sup>, Qizhe Zhang<sup>1</sup>,<br>
+Zheng Lu<sup>2</sup>, Yuan Zhang<sup>1</sup>, Jiajun Cao<sup>1</sup>, Zhirong Shen<sup>2</sup>, Yaosong Du<sup>2</sup>,<br>
+Lijie Hu<sup>4</sup>, Shanghang Zhang<sup>1,‡</sup>
+</p>
+
+<p align="center">
+<sup>1</sup> State Key Laboratory of Multimedia Information Processing, School of Computer Science, Peking University<br>
+<sup>2</sup> University of Electronic Science and Technology of China<br>
+<sup>3</sup> Nanyang Technological University<br>
+<sup>4</sup> MBZUAI
+</p>
+
+<p align="center">
+<sup>*</sup> Equal contribution. &nbsp; <sup>†</sup> Project leader. &nbsp; <sup>‡</sup> Corresponding author.
+</p>
+
 **Task relevance · Information coverage · Semantic diversity**
 
 [Paper](https://arxiv.org/abs/2606.27161) · [Method](#method) · [Results](#results) · [Quick start](#quick-start) · [Evaluation guide](docs/RUNNING.md)
@@ -185,7 +202,7 @@ Figures are copied from the original paper project; tables retain the original L
 ```bibtex
 @article{wang2026tops,
   title={TOPS: First-Principles Visual Token Pruning via Constructing Token Optimal Preservation Sets for Efficient MLLM Inference},
-  author={Wang, Tinghao and Guo, Yichen and Huang, Rui and others},
+  author={Wang, Tinghao and Guo, Yichen and Huang, Rui and Yao, Junchi and Zhang, Qizhe and Lu, Zheng and Zhang, Yuan and Cao, Jiajun and Shen, Zhirong and Du, Yaosong and Hu, Lijie and Zhang, Shanghang},
   journal={arXiv preprint arXiv:2606.27161},
   year={2026}
 }
