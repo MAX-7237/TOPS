@@ -1,0 +1,26 @@
+{
+  "qwen2.5-vl-7b": {
+    "folder": "VLMEvalKit-TOPS",
+    "kind": "vlmeval",
+    "registry": "Qwen2.5-VL-7B-Instruct",
+    "method": "tops",
+    "budgets": [
+      256,
+      128
+    ],
+    "alpha": 0.5,
+    "coverage_lambda": 0.5
+  },
+  "internvl3-8b": {
+    "folder": "VLMEvalKit-TOPS",
+    "kind": "vlmeval",
+    "registry": "InternVL3-8B",
+    "method": "tops",
+    "budgets": [
+      256,
+      128
+    ],
+    "alpha": 0.2,
+    "coverage_lambda": 0.2
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "llava-1.5-7b": {
+    "folder": "LLaVA-TOPS",
+    "kind": "image",
+    "model_path": "liuhaotian/llava-v1.5-7b",
+    "method": "prefixvlm_2",
+    "budgets": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.5,
+    "coverage_lambda": 0.5
+  },
+  "llava-1.5-13b": {
+    "folder": "LLaVA-TOPS",
+    "kind": "image",
+    "model_path": "liuhaotian/llava-v1.5-13b",
+    "method": "prefixvlm_2",
+    "budgets": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.5,
+    "coverage_lambda": 0.5
+  },
+  "llava-next-7b": {
+    "folder": "LLaVA-TOPS",
+    "kind": "image",
+    "model_path": "liuhaotian/llava-v1.6-vicuna-7b",
+    "method": "prefixvlm_2",
+    "budgets": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.5,
+    "coverage_lambda": 0.5
+  },
+  "llava-next-13b": {
+    "folder": "LLaVA-TOPS",
+    "kind": "image",
+    "model_path": "liuhaotian/llava-v1.6-vicuna-13b",
+    "method": "prefixvlm_2",
+    "budgets": [
+      128,
+      64,
+      32
+    ],
+    "alpha": 0.5,
+    "coverage_lambda": 0.5
+  }
+}

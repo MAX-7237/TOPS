@@ -1,0 +1,104 @@
+{
+  "python_syntax_files": 1041,
+  "syntax_errors": [],
+  "launcher_dry_runs": [
+    {
+      "model": "llava-1.5-7b",
+      "tokens": 128,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-1.5-7b",
+      "tokens": 64,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-1.5-7b",
+      "tokens": 32,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-1.5-13b",
+      "tokens": 128,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-1.5-13b",
+      "tokens": 64,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-1.5-13b",
+      "tokens": 32,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-next-7b",
+      "tokens": 128,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-next-7b",
+      "tokens": 64,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-next-7b",
+      "tokens": 32,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-next-13b",
+      "tokens": 128,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-next-13b",
+      "tokens": 64,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-next-13b",
+      "tokens": 32,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-video-7b",
+      "tokens": 64,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-video-7b",
+      "tokens": 32,
+      "exit_code": 0
+    },
+    {
+      "model": "llava-video-7b",
+      "tokens": 16,
+      "exit_code": 0
+    },
+    {
+      "model": "qwen2.5-vl-7b",
+      "tokens": 256,
+      "exit_code": 0
+    },
+    {
+      "model": "qwen2.5-vl-7b",
+      "tokens": 128,
+      "exit_code": 0
+    },
+    {
+      "model": "internvl3-8b",
+      "tokens": 256,
+      "exit_code": 0
+    },
+    {
+      "model": "internvl3-8b",
+      "tokens": 128,
+      "exit_code": 0
+    }
+  ],
+  "private_scan_matches": [],
+  "gpu_inference": "not performed",
+  "environment_installation": "not completed"
+}

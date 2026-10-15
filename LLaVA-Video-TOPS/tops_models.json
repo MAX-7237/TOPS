@@ -1,0 +1,16 @@
+{
+  "llava-video-7b": {
+    "folder": "LLaVA-Video-TOPS",
+    "kind": "video",
+    "model_path": "lmms-lab/LLaVA-Video-7B-Qwen2",
+    "method": "tops",
+    "evidence": "source implementation; video absent from provided document main tables",
+    "budgets": [
+      64,
+      32,
+      16
+    ],
+    "alpha": 0.5,
+    "coverage_lambda": 0.5
+  }
+}
